@@ -334,7 +334,13 @@ static unsafe partial class Game
         InitWindow(1280, 720, "Dreamy Hellcore");
         SetExitKey(KeyboardKey.Null);        // Esc beendet das Spiel NICHT mehr (pausiert nur)
         string iconPath = Path.Combine(AppContext.BaseDirectory, "icon.png");   // Fenster-/Taskleisten-Icon (Windows und Linux)
-        if (File.Exists(iconPath)) { Image ic = LoadImage(iconPath); SetWindowIcon(ic); UnloadImage(ic); }
+        if (File.Exists(iconPath))
+        {   // raylib/GLFW nehmen fuer das Fenstersymbol nur RGBA an; ein RGB-PNG wuerde stillschweigend verworfen
+            Image ic = LoadImage(iconPath);
+            ImageFormat(ref ic, PixelFormat.UncompressedR8G8B8A8);
+            SetWindowIcon(ic);
+            UnloadImage(ic);
+        }
         SetTargetFPS(botOn ? 0 : 144); LoadUiFont();
         if (full) ToggleBorderlessWindowed();
         if (!auto) { DisableCursor(); Discord.Start(); }
