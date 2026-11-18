@@ -1,4 +1,4 @@
-**[English version](README.md)**
+**[English version](README.md)** · [Website](https://program3939.github.io/dream-hellcore/) · [Discord](https://discord.gg/YtHUZUh3P8)
 
 # Dreamy Hellcore
 

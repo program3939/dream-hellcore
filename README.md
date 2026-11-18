@@ -17,7 +17,9 @@
 </p>
 
 <p align="center">
+  <a href="https://program3939.github.io/dream-hellcore/"><b>Website</b></a> ·
   <a href="../../releases/latest"><b>⬇ Download the latest release</b></a> ·
+  <a href="https://discord.gg/YtHUZUh3P8">Discord</a> ·
   <a href="README.de.md">Deutsche Version</a>
 </p>
 

@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b090b">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dreamy Hellcore">
+<meta property="og:description" content="An endless horror platformer that begins as a dream and ends in hell. Free for Windows and Linux.">
+<meta property="og:image" content="https://program3939.github.io/dream-hellcore/assets/og.jpg">
+<meta property="og:url" content="https://program3939.github.io/dream-hellcore/">
+<meta name="twitter:card" content="summary_large_image">
+<title>Dreamy Hellcore</title>
+<meta name="description" content="An endless horror platformer that begins as a dream and ends in hell. Free for Windows and Linux.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="preload" as="image" href="assets/figure.webp" fetchpriority="high">
+<style>
+/* Layout: a film-poster hero (giant HELLCORE behind a gaunt figure and a blood moon), then the descent,
+   the numbers, the rulebook of mechanics, the False Heaven, the ten gates, and the way in. */
+:root {
+  --ink: #0b090b;
+  --ink-2: #141013;
+  --bone: #efe9e1;
+  --ash: #a39a9e;
+  --line: #2c2428;
+  --blood: #a8160f;
+  --ember: #e1452a;
+  --halo: #e2bf7c;
+  --display: "Anton", "Impact", "Haettenschweiler", "Arial Narrow", sans-serif;
+  --serif: "Instrument Serif", "Times New Roman", serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --gutter-l: max(clamp(16px, 3.2vw, 48px), env(safe-area-inset-left, 0px));
+  --gutter-r: max(clamp(16px, 3.2vw, 48px), env(safe-area-inset-right, 0px));
+  color-scheme: dark;
+}
+html { background: var(--ink); scroll-behavior: smooth; }
+body {
+  background: var(--ink); color: var(--bone);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.6;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+body::after {   /* film grain */
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+:focus-visible { outline: 2px solid var(--halo); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1440px; margin-inline: auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- buttons ---------- */
+.btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: 56px; padding: 0 28px; border: 1.5px solid var(--bone); border-radius: 999px;
+  font-family: var(--display); font-size: 1.25rem; letter-spacing: .05em; text-transform: uppercase; text-decoration: none;
+  color: var(--bone); background: transparent; cursor: pointer;
+  transition: color .35s ease, transform .15s ease, border-color .35s ease;
+}
+.btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: var(--bone);
+  transform: translateX(-101%); transition: transform .45s cubic-bezier(.7, 0, .2, 1);
+}
+.btn svg { width: 18px; height: 18px; flex: none; transition: transform .35s ease; }
+.btn:hover { color: var(--ink); }
+.btn:hover::before { transform: translateX(0); }
+.btn:hover svg { transform: translate(3px, -3px); }
+.btn:active { transform: scale(.97); }
+.btn--solid { background: var(--bone); color: var(--ink); }
+.btn--solid::before { background: var(--ember); }
+.btn--solid:hover { color: var(--bone); border-color: var(--ember); }
+.btn--ember { border-color: var(--ember); }
+.btn--ember::before { background: var(--ember); }
+.btn--ember:hover { color: var(--ink); }
+.icon-btn {
+  display: inline-grid; place-items: center; width: 48px; height: 48px; flex: none;
+  border: 1.5px solid rgb(239 233 225 / .55); border-radius: 50%; color: var(--bone); text-decoration: none;
+  transition: background .3s ease, color .3s ease, border-color .3s ease, transform .15s ease;
+}
+.icon-btn svg { width: 20px; height: 20px; }
+.icon-btn:hover { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+.icon-btn:active { transform: scale(.94); }
+.icon-btn--solid { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+.icon-btn--solid:hover { background: var(--ember); color: var(--bone); border-color: var(--ember); }
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  height: clamp(680px, 56.25vw, 1000px);
+  background: radial-gradient(ellipse 70% 60% at 50% 48%, #1d0e0f 0%, var(--ink) 70%);
+}
+.nav {
+  position: relative; z-index: 6; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding-top: clamp(16px, 2vw, 28px);
+}
+.brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+.brand img { width: 36px; height: 36px; border-radius: 50%; }
+.brand span { font-family: var(--display); font-size: 1.4rem; letter-spacing: .05em; text-transform: uppercase; line-height: 1; }
+.nav__links { display: flex; gap: 6px 28px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; justify-content: center; }
+.nav__links a {
+  font-size: .875rem; letter-spacing: .24em; text-transform: uppercase; text-decoration: none; color: var(--ash);
+  display: inline-flex; align-items: center; gap: 28px; min-height: 44px; transition: color .25s ease;
+}
+.nav__links li + li a::before { content: "·"; color: var(--line); margin-left: -28px; margin-right: 0; width: 28px; text-align: center; letter-spacing: 0; }
+.nav__links a:hover { color: var(--bone); }
+.nav__actions { display: flex; gap: 10px; }
+
+.hero__meta { position: relative; z-index: 6; display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 18px; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag { font-size: .8125rem; letter-spacing: .14em; text-transform: uppercase; padding: 5px 12px; border: 1px solid rgb(239 233 225 / .35); border-radius: 999px; color: var(--bone); }
+.meta-note { font-size: .8125rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ash); text-align: right; }
+
+.hero__art { position: absolute; inset: 0; z-index: 1; }
+.stages {
+  position: absolute; z-index: 2; top: 14%; left: 0; right: 0; display: flex; justify-content: space-between; gap: 16px;
+  font-family: var(--display); font-size: clamp(1.15rem, 2vw, 2.1rem); letter-spacing: .02em; text-transform: uppercase; line-height: 1;
+}
+.stages span { white-space: nowrap; }
+.stages i { font-style: normal; letter-spacing: .32em; opacity: .55; }
+.stages .s1 { color: #b9b4e6; } .stages .s2 { color: #c9d1b4; } .stages .s3 { color: #e9a08a; } .stages .s4 { color: var(--ember); }
+.moon {
+  position: absolute; z-index: 1; left: 50%; top: 50%; width: clamp(260px, 33vw, 560px); aspect-ratio: 1; max-width: 100%;
+  transform: translate(calc(-50% + var(--mx, 0px)), calc(-50% + var(--my, 0px))); border-radius: 50%;
+  background: radial-gradient(circle at 48% 42%, #cf2a1c 0%, #a8160f 42%, #6e0c08 72%, #3d0604 100%);
+  animation: pulse 7s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 90px 12px rgb(168 22 15 / .28); } 50% { box-shadow: 0 0 150px 46px rgb(168 22 15 / .45); } }
+.dreamy {
+  position: absolute; z-index: 2; left: 0; right: 0; top: 19.5%; margin: 0; text-align: center;
+  font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(2.2rem, 4.6vw, 5rem); line-height: 1;
+  color: var(--halo); text-shadow: 0 0 28px rgb(226 191 124 / .35);
+}
+.title {
+  position: absolute; z-index: 2; left: 0; right: 0; top: 52%; transform: translateY(-50%); margin: 0; text-align: center;
+  font-family: var(--display); font-weight: 400; font-size: clamp(5.5rem, 24.5vw, 25rem); line-height: .8; letter-spacing: .004em;
+  color: var(--bone); white-space: nowrap;
+}
+.title span { display: inline-block; animation: rise 1s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * 55ms); }
+@keyframes rise { from { transform: translateY(12%); opacity: .2; } to { transform: none; opacity: 1; } }
+.year {
+  position: absolute; z-index: 2; top: 50%; right: var(--gutter-r); transform: translateY(-50%) rotate(180deg); writing-mode: vertical-rl;
+  font-family: var(--display); font-size: clamp(1rem, 1.5vw, 1.5rem); letter-spacing: .18em; color: var(--bone);
+}
+.figure {
+  position: absolute; z-index: 3; left: 50%; bottom: 0; height: 78%; width: auto; max-width: none; pointer-events: none;
+  transform-origin: 50% 100%; transform: translateX(calc(-50% + var(--fx, 0px)));
+  animation: arrive 1.6s cubic-bezier(.2, .7, .2, 1) both .15s;
+}
+@keyframes arrive { from { opacity: 0; filter: blur(8px); } to { opacity: 1; filter: none; } }
+.track { position: absolute; z-index: 2; left: 0; right: 0; top: 70%; }
+.track__line { height: 2px; background: repeating-linear-gradient(90deg, rgb(239 233 225 / .7) 0 14px, transparent 14px 26px); }
+.track__labels {
+  display: flex; justify-content: space-between; margin-bottom: 10px;
+  font-size: .8125rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ash); font-variant-numeric: tabular-nums;
+}
+
+.hero__foot {
+  position: absolute; z-index: 5; left: 0; right: 0; bottom: clamp(20px, 2.6vw, 40px);
+  display: grid; grid-template-columns: minmax(0, clamp(15rem, 25vw, 24rem)) 1fr auto; align-items: end; gap: 24px;
+}
+.story { min-width: 0; }
+.story__label {
+  display: flex; align-items: center; gap: 10px; margin: 0 0 8px;
+  font-size: .8125rem; letter-spacing: .24em; text-transform: uppercase; color: var(--bone);
+}
+.story__label::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--ember); box-shadow: 0 0 12px var(--ember); }
+.story p:last-child { margin: 0; color: #cfc6c1; font-size: 1rem; line-height: 1.55; }
+.cta { display: flex; align-items: center; gap: 24px; }
+.cta__main { display: grid; gap: 8px; justify-items: center; }
+.cta__note { font-size: .8125rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ash); }
+.badge { position: relative; display: grid; place-items: center; width: 124px; height: 124px; flex: none; border-radius: 50%; text-decoration: none; }
+.badge svg { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 22s linear infinite; }
+.badge text { font-family: var(--display); font-size: 11.5px; letter-spacing: 3.2px; fill: var(--bone); text-transform: uppercase; }
+.badge img { width: 58px; height: 58px; border-radius: 50%; border: 1.5px solid var(--ember); transition: transform .4s ease; }
+.badge:hover img { transform: scale(1.08) rotate(-8deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- sections ---------- */
+.band { padding-block: clamp(72px, 10vw, 150px); border-top: 1px solid var(--line); }
+.eyebrow { margin: 0 0 14px; font-size: .875rem; letter-spacing: .26em; text-transform: uppercase; color: var(--ember); }
+h2 {
+  margin: 0; font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .01em;
+  font-size: clamp(2.6rem, 6.4vw, 6.2rem); line-height: .92; text-wrap: balance;
+}
+h3 { margin: 0; font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .03em; font-size: 1.6rem; line-height: 1.05; }
+.lead { margin: 22px 0 0; max-width: 62ch; color: #cfc6c1; font-size: 1.125rem; }
+.sec-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 24px 48px; align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
+.sec-head .lead { margin: 0; }
+
+.descent { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+.descent li { min-width: 0; display: grid; gap: 14px; align-content: start; }
+.shot { overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; background: var(--ink-2); border-radius: 3px; }
+.shot img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9); transition: transform .8s cubic-bezier(.2, .7, .2, 1), filter .5s ease; }
+.descent li:hover .shot img { transform: scale(1.05); filter: saturate(1.15); }
+.stage-no { font-size: .8125rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ash); font-variant-numeric: tabular-nums; }
+.descent p { margin: 0; color: #c4bab6; }
+
+.stats { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.stats ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.stats li { padding-block: clamp(28px, 4vw, 52px); padding-inline: 18px; border-left: 1px solid var(--line); display: grid; gap: 6px; }
+.stats li:first-child { border-left: 0; padding-left: 0; }
+.stats b { font-family: var(--display); font-weight: 400; font-size: clamp(2.8rem, 5vw, 5rem); line-height: .9; font-variant-numeric: tabular-nums; }
+.stats span { font-size: .9375rem; color: var(--ash); }
+.stats li:last-child b { color: var(--ember); }
+
+.rules { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(36px, 6vw, 96px); align-items: start; }
+.ledger { width: 100%; border-collapse: collapse; margin-top: 28px; font-variant-numeric: tabular-nums; }
+.ledger td { padding: 13px 0; border-top: 1px solid var(--line); vertical-align: baseline; }
+.ledger tr:last-child td { border-bottom: 1px solid var(--line); }
+.ledger td:first-child { width: 5.5rem; font-family: var(--display); font-size: 1.35rem; color: var(--ember); }
+.ledger td:last-child { font-size: 1.0625rem; }
+.ledger th { text-align: left; font-weight: 500; font-size: .8125rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ash); padding-bottom: 10px; }
+.rules__side { display: grid; gap: 36px; min-width: 0; }
+.rules__side figure { margin: 0; display: grid; gap: 10px; }
+.rules__side figcaption { font-size: .875rem; color: var(--ash); }
+.note { display: grid; gap: 8px; }
+.note p { margin: 0; color: #c4bab6; }
+
+.heaven { position: relative; isolation: isolate; overflow: hidden; border-top: 1px solid var(--line); }
+.heaven > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.heaven::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgb(11 9 11 / .92) 0%, rgb(11 9 11 / .7) 38%, rgb(11 9 11 / .05) 75%), linear-gradient(0deg, var(--ink) 0%, transparent 30%);
+}
+.heaven .wrap { padding-block: clamp(110px, 15vw, 230px); }
+.heaven h2 { font-family: var(--serif); font-style: italic; text-transform: none; font-size: clamp(3.2rem, 8vw, 7.5rem); line-height: .95; color: var(--halo); letter-spacing: 0; }
+.heaven .eyebrow { color: var(--halo); }
+.heaven p { max-width: 46ch; margin: 22px 0 0; font-size: 1.125rem; color: #e6dccd; }
+
+.gates { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.gates li {
+  display: grid; grid-template-columns: 7rem minmax(0, 15rem) minmax(0, 1fr); gap: 8px 32px; align-items: baseline;
+  padding-block: 18px; border-bottom: 1px solid var(--line); transition: background .3s ease;
+}
+.gates li:hover { background: linear-gradient(90deg, rgb(168 22 15 / .12), transparent 70%); }
+.gates .no { font-family: var(--display); font-size: 1.35rem; color: var(--ember); font-variant-numeric: tabular-nums; }
+.gates .no small { display: block; font-family: var(--body); font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ash); }
+.gates .name { font-family: var(--display); font-size: 1.6rem; text-transform: uppercase; letter-spacing: .02em; line-height: 1.1; }
+.gates .goal { margin: 0; color: #c4bab6; }
+.help { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; margin-top: 36px; }
+.help p { margin: 0; color: #c4bab6; }
+kbd {
+  display: inline-block; min-width: 2em; padding: 1px 8px; border: 1px solid #4a3f44; border-bottom-width: 3px; border-radius: 6px;
+  font-family: var(--body); font-size: .875rem; font-weight: 600; text-align: center; color: var(--bone); background: var(--ink-2);
+}
+
+.gate { position: relative; overflow: hidden; border-top: 1px solid var(--line); background: radial-gradient(ellipse 60% 70% at 85% 20%, #240d0d, var(--ink) 65%); }
+.gate .wrap { padding-block: clamp(80px, 11vw, 170px); display: grid; gap: 40px; }
+.gate h2 { font-size: clamp(3rem, 9vw, 9rem); }
+.platforms { display: flex; flex-wrap: wrap; gap: 16px; }
+.platforms .btn { min-height: 72px; padding: 0 34px; font-size: 1.5rem; }
+.platforms .btn small { font-family: var(--body); font-size: .8125rem; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.links { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; font-size: .9375rem; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--ash); border-bottom: 1px solid transparent; transition: color .25s ease, border-color .25s ease; }
+.links a:hover { color: var(--bone); border-color: var(--ember); }
+.req { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px 40px; padding-top: 28px; border-top: 1px solid var(--line); }
+.req h3 { font-size: 1.15rem; color: var(--ash); margin-bottom: 8px; }
+.req p { margin: 0; color: #cfc6c1; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.controls span { display: inline-flex; align-items: center; gap: 8px; color: #cfc6c1; font-size: .9375rem; }
+
+.discord { border-top: 1px solid var(--line); background: var(--ink-2); }
+.discord .wrap { padding-block: clamp(64px, 8vw, 120px); display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 32px; }
+.discord p { margin: 14px 0 0; max-width: 52ch; color: #cfc6c1; }
+.discord .btn svg { width: 22px; height: 22px; }
+.discord .btn:hover svg { transform: none; }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { padding-block: 36px calc(36px + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; justify-content: space-between; }
+footer p { margin: 0; color: var(--ash); font-size: .9375rem; }
+
+/* ---------- tablet ---------- */
+@media (max-width: 1100px) {
+  .nav__links { display: none; }
+  .descent { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stats li:nth-child(4) { border-left: 0; padding-left: 0; }
+  .stats li:nth-child(n+4) { border-top: 1px solid var(--line); }
+  .rules, .sec-head { grid-template-columns: minmax(0, 1fr); }
+}
+/* ---------- phone ---------- */
+@media (max-width: 760px) {
+  .hero { height: auto; padding-bottom: 36px; }
+  .meta-note { display: none; }
+  .brand span { font-size: 1.15rem; }
+  .hero__art { position: relative; height: 138vw; margin-top: 8px; }
+  .stages { top: 3%; font-size: 4.4vw; }
+  .stages i { letter-spacing: .18em; }
+  .moon { width: 64vw; top: 50%; }
+  .dreamy { top: 15%; font-size: 11vw; }
+  .title { top: 51%; font-size: 24.5vw; }
+  .year { display: none; }
+  .figure { height: 78%; }
+  .track { top: 82%; }
+  .hero__foot { position: static; grid-template-columns: minmax(0, 1fr); gap: 28px; margin-top: 12px; }
+  .hero__foot .spacer { display: none; }
+  .cta { order: -1; flex-wrap: wrap; justify-content: space-between; }
+  .cta__main { justify-items: start; }
+  .badge { width: 108px; height: 108px; }
+  .descent { grid-template-columns: minmax(0, 1fr); }
+  .stats ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats li:nth-child(4) { border-left: 1px solid var(--line); padding-left: 18px; }
+  .stats li:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .stats li:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .gates li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .help, .req { grid-template-columns: minmax(0, 1fr); }
+  .platforms .btn { width: 100%; justify-content: space-between; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+<style>body { margin: 0; } [hidden] { display: none !important; }</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v13m0 0-6-6m6 6 6-6M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5A11.5 11.5 0 0 0 8.36 22.9c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></symbol>
+  <symbol id="i-discord" viewBox="0 0 24 24"><path fill="currentColor" d="M20.32 4.37A19.8 19.8 0 0 0 15.4 2.85a.07.07 0 0 0-.08.04c-.21.38-.45.87-.61 1.25a18.3 18.3 0 0 0-5.46 0 12.6 12.6 0 0 0-.62-1.25.08.08 0 0 0-.08-.04 19.7 19.7 0 0 0-4.92 1.52.07.07 0 0 0-.03.03C.53 9.04-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .08-.03c.46-.63.87-1.3 1.23-2a.08.08 0 0 0-.04-.1 13.1 13.1 0 0 1-1.87-.9.08.08 0 0 1 0-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1 0 .13c-.6.35-1.22.65-1.87.9a.08.08 0 0 0-.04.1c.36.7.78 1.37 1.23 2a.08.08 0 0 0 .08.03 19.8 19.8 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.68-3.55-13.66a.06.06 0 0 0-.03-.03ZM8.02 15.33c-1.18 0-2.16-1.08-2.16-2.42 0-1.33.96-2.42 2.16-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.96 2.42-2.16 2.42Zm7.97 0c-1.18 0-2.15-1.08-2.15-2.42 0-1.33.95-2.42 2.15-2.42 1.21 0 2.18 1.1 2.16 2.42 0 1.34-.95 2.42-2.16 2.42Z"/></symbol>
+</svg>
+
+<header class="hero" id="top">
+  <nav class="nav wrap" aria-label="Main">
+    <a class="brand" href="#top"><img src="assets/logo.webp" width="36" height="36" alt=""><span>Dreamy Hellcore</span></a>
+    <ul class="nav__links">
+      <li><a href="#descent">The descent</a></li>
+      <li><a href="#rules">Mechanics</a></li>
+      <li><a href="#heaven">False Heaven</a></li>
+      <li><a href="#gates">Escape rooms</a></li>
+    </ul>
+    <div class="nav__actions">
+      <a class="icon-btn" href="https://github.com/program3939/dream-hellcore" target="_blank" rel="noopener" aria-label="Source code on GitHub"><svg><use href="#i-github"/></svg></a>
+      <a class="icon-btn" href="https://discord.gg/YtHUZUh3P8" target="_blank" rel="noopener" aria-label="Join the Discord"><svg><use href="#i-discord"/></svg></a>
+      <a class="icon-btn icon-btn--solid" href="https://github.com/program3939/dream-hellcore/releases/latest" target="_blank" rel="noopener" aria-label="Download the latest release"><svg><use href="#i-down"/></svg></a>
+    </div>
+  </nav>
+
+  <div class="hero__meta wrap">
+    <div class="tags"><span class="tag">Endless</span><span class="tag">No death</span><span class="tag">Free</span></div>
+    <p class="meta-note">Windows &amp; Linux · Open source</p>
+  </div>
+
+  <div class="hero__art" id="art">
+    <div class="stages wrap" aria-hidden="true">
+      <span class="s1">Dre<i>am</i></span><span class="s2">Une<i>ase</i></span><span class="s3">Dre<i>ad</i></span><span class="s4">Ter<i>ror</i></span>
+    </div>
+    <div class="moon" aria-hidden="true"></div>
+    <p class="dreamy" aria-hidden="true">Dreamy</p>
+    <h1 class="title" aria-label="Dreamy Hellcore"><span style="--i:0">H</span><span style="--i:1">E</span><span style="--i:2">L</span><span style="--i:3">L</span><span style="--i:4">C</span><span style="--i:5">O</span><span style="--i:6">R</span><span style="--i:7">E</span></h1>
+    <span class="year" aria-hidden="true">[2026]</span>
+    <div class="track" aria-hidden="true">
+      <div class="track__labels wrap"><span>Hellstage 1</span><span>Hellstage ∞</span></div>
+      <div class="track__line"></div>
+    </div>
+    <img class="figure" src="assets/figure.webp" width="900" height="1500" alt="A tall, thin shadow figure with two small glowing eyes" fetchpriority="high">
+  </div>
+
+  <div class="hero__foot wrap">
+    <div class="story">
+      <p class="story__label">The story</p>
+      <p>Every room is a Hellstage, built from its own number. Each one is larger, stranger and darker than the last. You never die. The dark just takes you back.</p>
+    </div>
+    <div class="spacer"></div>
+    <div class="cta">
+      <div class="cta__main">
+        <a class="btn btn--solid" href="https://github.com/program3939/dream-hellcore/releases/latest" target="_blank" rel="noopener">Download free<svg><use href="#i-arrow"/></svg></a>
+        <span class="cta__note">Latest release · Windows &amp; Linux</span>
+      </div>
+      <a class="badge" href="https://discord.gg/YtHUZUh3P8" target="_blank" rel="noopener" aria-label="Join the Dreamy Hellcore Discord">
+        <svg viewBox="0 0 124 124" aria-hidden="true">
+          <defs><path id="ring" d="M62,62 m-49,0 a49,49 0 1,1 98,0 a49,49 0 1,1 -98,0"/></defs>
+          <text><textPath href="#ring">Join the Discord · Join the Discord ·</textPath></text>
+        </svg>
+        <img src="assets/logo.webp" width="58" height="58" alt="">
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="band" id="descent">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">The descent</p><h2>It starts as a dream.</h2></div>
+        <p class="lead">Hellstage 1 is a quiet indigo night with an aurora overhead and stars under the path. Within ten rooms the color drains away. By Hellstage 30 the lights die behind you. Nothing is built by hand: every room grows from its number, and the same number always grows the same room.</p>
+      </div>
+      <ol class="descent">
+        <li>
+          <div class="shot"><img src="assets/01-dream.webp" width="1280" height="720" loading="lazy" alt="Hellstage 1: pale platforms in an indigo hall under an aurora"></div>
+          <span class="stage-no">Hellstage 1</span><h3>Dream</h3>
+          <p>Fireflies, a music box, a sea of stars beneath the path.</p>
+        </li>
+        <li>
+          <div class="shot"><img src="assets/04-puzzle-chamber.webp" width="1280" height="720" loading="lazy" alt="Hellstage 19: a puzzle chamber above glowing embers"></div>
+          <span class="stage-no">Hellstage 19</span><h3>Dread</h3>
+          <p>Embers below. Eyes in the walls that turn to follow you.</p>
+        </li>
+        <li>
+          <div class="shot"><img src="assets/05-the-flash.webp" width="1280" height="720" loading="lazy" alt="Hellstage 60: lightning reveals rows of figures and eyes in the walls"></div>
+          <span class="stage-no">Hellstage 60</span><h3>Terror</h3>
+          <p>A flash of lightning shows the crowd that was always there.</p>
+        </li>
+        <li>
+          <div class="shot"><img src="assets/06-the-void.webp" width="1280" height="720" loading="lazy" alt="Hellstage 100,000: a lone platform in black emptiness"></div>
+          <span class="stage-no">Hellstage 100,000</span><h3>The void</h3>
+          <p>Rooms the size of cities. Geometry that should not exist.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="The game in numbers">
+    <div class="wrap">
+      <ul>
+        <li><b>∞</b><span>Hellstages</span></li>
+        <li><b>10</b><span>Mechanics</span></li>
+        <li><b>16</b><span>Room types</span></li>
+        <li><b>10</b><span>Escape-room puzzles</span></li>
+        <li><b>25</b><span>Scare events</span></li>
+        <li><b>0</b><span>Deaths</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" id="rules">
+    <div class="wrap rules">
+      <div>
+        <p class="eyebrow">Mechanics</p>
+        <h2>Every few rooms, a new rule.</h2>
+        <p class="lead">The goal never changes: reach the next checkpoint. The way there does. Every jump is checked against the physics before a room is built, so the path is always fair, even when it no longer looks like it.</p>
+        <table class="ledger">
+          <thead><tr><th scope="col">Hellstage</th><th scope="col">From here on</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Rooms that climb and rooms that descend</td></tr>
+            <tr><td>4</td><td>Moving platforms</td></tr>
+            <tr><td>6</td><td>Bounce pads</td></tr>
+            <tr><td>7</td><td>Platforms that vanish</td></tr>
+            <tr><td>8</td><td>Long falls into the dark</td></tr>
+            <tr><td>9</td><td>Rail rides</td></tr>
+            <tr><td>10</td><td>Platforms that crumble</td></tr>
+            <tr><td>11</td><td>Gusts of wind</td></tr>
+            <tr><td>12</td><td>Conveyor belts</td></tr>
+            <tr><td>13</td><td>Low gravity</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rules__side">
+        <figure>
+          <div class="shot"><img src="assets/03-rollercoaster.webp" width="1280" height="720" loading="lazy" alt="A glowing rail curving through a dark red hall"></div>
+          <figcaption>Hellstage 30. The only light is the rail.</figcaption>
+        </figure>
+        <div class="note">
+          <h3>A director that never repeats</h3>
+          <p>Tension rises in waves and breaks at every checkpoint. The director never fires the same event twice in a row. It goes silent before the worst moments, and sometimes the scare you are waiting for never comes.</p>
+        </div>
+        <div class="note">
+          <h3>Sound made while you play</h3>
+          <p>No music loop and no audio files. Wind, a heartbeat, breathing behind you, whispers at one ear, a choir in which one voice keeps sinking a quarter tone. Every sound is generated live.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="heaven" id="heaven">
+    <img src="assets/02-false-heaven.webp" width="1280" height="720" loading="lazy" alt="An ivory hall in golden light, lined with faceless white figures">
+    <div class="wrap">
+      <p class="eyebrow">Some gates open upward</p>
+      <h2>The False Heaven</h2>
+      <p>An ivory hall in golden light. A choir in perfect rows, every face blank, one figure far too tall. It is the most beautiful place in the game. When lightning strikes, the mask slips, and for a moment the hall is black and red.</p>
+    </div>
+  </section>
+
+  <section class="band" id="gates">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="eyebrow">Escape rooms</p><h2>Ten locked gates.</h2></div>
+        <p class="lead">Every fourth Hellstage ends in a puzzle chamber. There is no text on the walls. Plates, pins, lights and tones explain each rule, and you answer by stepping on plates. Mistakes never kill you, but the room answers back.</p>
+      </div>
+      <ol class="gates">
+        <li><span class="no"><small>Hellstage</small>3</span><span class="name">Lights Out</span><p class="goal">Each plate flips itself and its four neighbours. Make every plate glow.</p></li>
+        <li><span class="no"><small>Hellstage</small>7</span><span class="name">Scale</span><p class="goal">Every plate sings. Step on them from the lowest tone to the highest.</p></li>
+        <li><span class="no"><small>Hellstage</small>11</span><span class="name">The Odd One</span><p class="goal">Every pillar has a twin, except one. Stand before it.</p></li>
+        <li><span class="no"><small>Hellstage</small>15</span><span class="name">Sum</span><p class="goal">Light the plates whose values add up to the number at the gate.</p></li>
+        <li><span class="no"><small>Hellstage</small>19</span><span class="name">Mirror Image</span><p class="goal">Copy a pattern of light as its mirror image.</p></li>
+        <li><span class="no"><small>Hellstage</small>23</span><span class="name">Every Stone Once</span><p class="goal">Step on every plate exactly once, always onto a neighbour.</p></li>
+        <li><span class="no"><small>Hellstage</small>27</span><span class="name">Counting Lock</span><p class="goal">Count the figures in the room and set each counter to match.</p></li>
+        <li><span class="no"><small>Hellstage</small>31</span><span class="name">Counter</span><p class="goal">One plate counts up, one counts down. Stop exactly at the mark.</p></li>
+        <li><span class="no"><small>Hellstage</small>35</span><span class="name">Secret Code</span><p class="goal">Guess the code. The gate shows how many symbols are in place.</p></li>
+        <li><span class="no"><small>Hellstage</small>39</span><span class="name">Coupled Wheels</span><p class="goal">Each plate turns two counters at once. Fill them all.</p></li>
+      </ol>
+      <div class="help">
+        <p>Stuck? Press <kbd>H</kbd> and the next correct plate lights up. Or open the pause menu with <kbd>Esc</kbd> and skip the puzzle.</p>
+        <p>After the first ten, the puzzles rotate and grow. Hellstages 9, 17, 25 and on are trials instead: stand still, run from the dark, or do not look.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="gate" id="download">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Free download</p>
+        <h2>Enter Hellstage 1.</h2>
+      </div>
+      <div class="platforms">
+        <a class="btn btn--solid" href="https://github.com/program3939/dream-hellcore/releases/latest/download/DreamyHellcore-windows-x64.zip" target="_blank" rel="noopener">Windows <small>64-bit · .zip</small><svg><use href="#i-down"/></svg></a>
+        <a class="btn" href="https://github.com/program3939/dream-hellcore/releases/latest/download/DreamyHellcore-linux-x64.tar.gz" target="_blank" rel="noopener">Linux <small>64-bit · .tar.gz</small><svg><use href="#i-down"/></svg></a>
+      </div>
+      <div class="links">
+        <a href="https://github.com/program3939/dream-hellcore/releases/latest" target="_blank" rel="noopener">Release notes</a>
+        <a href="https://github.com/program3939/dream-hellcore/releases" target="_blank" rel="noopener">All versions</a>
+        <a href="https://github.com/program3939/dream-hellcore" target="_blank" rel="noopener">Source code</a>
+      </div>
+      <div class="req">
+        <div><h3>Install</h3><p>Nothing to install. Unzip and start. Windows may warn about an unsigned app: choose More info, then Run anyway.</p></div>
+        <div><h3>System</h3><p>Windows 10 or 11, or Linux, 64-bit. A graphics card with OpenGL 3.3. Headphones recommended.</p></div>
+        <div>
+          <h3>Controls</h3>
+          <div class="controls">
+            <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move</span>
+            <span><kbd>Space</kbd> jump</span>
+            <span><kbd>Shift</kbd> sprint</span>
+            <span><kbd>Ctrl</kbd> crouch</span>
+            <span><kbd>Esc</kbd> menu</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="discord">
+    <div class="wrap">
+      <div>
+        <h2>Nobody descends alone.</h2>
+        <p>Post your deepest Hellstage, ask for help with a puzzle, or report what you found down there.</p>
+      </div>
+      <a class="btn btn--ember" href="https://discord.gg/YtHUZUh3P8" target="_blank" rel="noopener"><svg><use href="#i-discord"/></svg>Join the Discord</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/logo.webp" width="36" height="36" alt=""><span>Dreamy Hellcore</span></a>
+    <p>Free and open source under the MIT license. © 2026 AYT</p>
+    <div class="nav__actions">
+      <a class="icon-btn" href="https://github.com/program3939/dream-hellcore" target="_blank" rel="noopener" aria-label="Source code on GitHub"><svg><use href="#i-github"/></svg></a>
+      <a class="icon-btn" href="https://discord.gg/YtHUZUh3P8" target="_blank" rel="noopener" aria-label="Join the Discord"><svg><use href="#i-discord"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Subtle depth in the hero: the figure and the moon drift against each other with the pointer.
+  (function () {
+    var art = document.getElementById('art');
+    if (!art || !window.matchMedia) return;
+    if (!matchMedia('(pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var raf = 0, tx = 0, ty = 0;
+    document.querySelector('.hero').addEventListener('pointermove', function (e) {
+      var r = art.getBoundingClientRect();
+      tx = (e.clientX - r.left) / r.width - 0.5; ty = (e.clientY - r.top) / r.height - 0.5;
+      if (!raf) raf = requestAnimationFrame(function () {
+        raf = 0;
+        art.style.setProperty('--fx', (tx * 14).toFixed(1) + 'px');
+        art.style.setProperty('--mx', (tx * -22).toFixed(1) + 'px');
+        art.style.setProperty('--my', (ty * -14).toFixed(1) + 'px');
+      });
+    });
+  })();
+</script>
+</body>
+</html>
