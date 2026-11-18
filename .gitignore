@@ -1,0 +1,17 @@
+# Build output
+builds/
+src/bin/
+src/obj/
+
+# Runtime files
+*.sav
+absturz.txt
+haenger.txt
+shader_fehler.txt
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vs/
+.vscode/
+*.lnk

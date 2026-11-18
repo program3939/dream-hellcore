@@ -1,0 +1,19 @@
+# Dreamy Hellcore - Discord-Aktivitaet mit Logo
+#
+# Damit Discord "Spielt Dreamy Hellcore" mit Logo, Hellstage und Raumtyp anzeigt, braucht das Spiel einmalig
+# eine eigene Discord-Anwendungs-ID. Das dauert etwa zwei Minuten:
+#
+#  1. https://discord.com/developers/applications oeffnen (mit dem eigenen Discord-Konto anmelden).
+#  2. "New Application" -> Name: Dreamy Hellcore -> erstellen.
+#  3. Auf der Seite "General Information" die APPLICATION ID kopieren.
+#  4. Links "Rich Presence" -> "Art Assets" -> "Add Image(s)": die Datei icon.png aus diesem Ordner hochladen
+#     und ihr den Namen   logo   geben (genau so, klein geschrieben). Speichern.
+#     (Discord braucht einige Minuten, bis ein neues Bild angezeigt wird.)
+#  5. Die kopierte ID unten in eine eigene Zeile schreiben (nur die Ziffern, ohne #) und die Datei speichern.
+#  6. Discord muss laufen; in Discord unter Einstellungen -> Aktivitaetseinstellungen muss
+#     "Aktuelle Aktivitaet als Statusmeldung anzeigen" eingeschaltet sein.
+#
+# Solange hier keine ID steht, zeigt das Spiel nichts auf Discord an.
+#
+# ID hier eintragen:
+

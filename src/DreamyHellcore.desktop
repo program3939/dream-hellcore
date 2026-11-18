@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Dreamy Hellcore
+Comment=Endloses Horror-Jump-and-Run
+Exec=./DreamyHellcore
+Icon=icon
+Path=.
+Terminal=false
+Categories=Game;

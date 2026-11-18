@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>DreamyHellcore</AssemblyName>
+    <RootNamespace>DreamyHellcore</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <DebugType>none</DebugType>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="icon.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="discord_app_id.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="DreamyHellcore.desktop" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Raylib-cs" Version="7.0.1" />
+  </ItemGroup>
+</Project>
