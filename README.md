@@ -20,6 +20,7 @@
   <a href="https://program3939.github.io/dream-hellcore/"><b>Website</b></a> ·
   <a href="../../releases/latest"><b>⬇ Download the latest release</b></a> ·
   <a href="https://discord.gg/YtHUZUh3P8">Discord</a> ·
+  <a href="https://ko-fi.com/dreamydevelopers">Support on Ko-fi</a> ·
   <a href="README.de.md">Deutsche Version</a>
 </p>
 
@@ -225,6 +226,11 @@ Rendered by `konzeptbilder/make_concepts.py` before the game existed — Hellsta
 - The False Heaven puzzle chambers can look washed out on bright screens.
 - Moving platforms only sway sideways; rotating platforms and true gravity flips are not in yet.
 - Discord Rich Presence and the Linux build have not been tested on real hardware yet.
+
+## Support
+
+Dreamy Hellcore is free and will stay free. If you enjoyed the descent, you can support development on
+[Ko-fi](https://ko-fi.com/dreamydevelopers).
 
 ## License
 
